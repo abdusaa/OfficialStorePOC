@@ -12,12 +12,26 @@ import {
   Linking,
 } from 'react-native'
 
+import Swiper from 'react-native-swiper'
+
 const { height, width } = Dimensions.get('window')
 
 const BannerList = ({ banners, onBannerPress, onViewAllPress }) => {
+  const topBanners = banners.filter(banner => banner.html_id === 0)
   return (
     <View>
-      <ViewPagerAndroid
+      <Swiper autoplay={true} showsPagination={false} height={185} autoplayTimeout={5}>
+        {
+          topBanners.map((banner, index) => (
+            <View key={banner.banner_id} style={{ paddingLeft: 5, paddingRight: 5 }}>
+              <TouchableWithoutFeedback onPress={(e) => onBannerPress(e, banner)}>
+                <Image source={{ uri: banner.image_url }} style={styles.pageStyle}></Image>
+              </TouchableWithoutFeedback>
+            </View>
+          ))
+        }
+      </Swiper>
+      {/* <ViewPagerAndroid
         initialPage={0}
         style={styles.viewPager}>
         {
@@ -29,7 +43,7 @@ const BannerList = ({ banners, onBannerPress, onViewAllPress }) => {
             </View> 
           ))
         }
-      </ViewPagerAndroid>
+      </ViewPagerAndroid>  */}
       <Text
         style={styles.viewAll}
         onPress={onViewAllPress}> Lihat Semua Promo  >
@@ -39,14 +53,17 @@ const BannerList = ({ banners, onBannerPress, onViewAllPress }) => {
 }
 
 var styles = StyleSheet.create({
+  container: {
+    marginVertical: 10
+  },
   pageStyle: {
     alignItems: 'center',
     padding: 20,
-    width: width,
-    height: 156,
+    width: width - 10,
+    height: 173,
   },
   viewPager: {
-    height: 156,
+    height: 185,
   },
   viewAll: {
     color: '#42b549',
@@ -54,6 +71,11 @@ var styles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'right',
     padding: 10
+  },
+  slide: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 })
 

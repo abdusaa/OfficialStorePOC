@@ -5,15 +5,21 @@ import LoadMore from './LoadMore'
 import Grid from '../common/grid/grid'
 
 const BrandList = (props) => {
-  console.log('Brand List props', props)
   const gridProps = {
     rows: 3,
     columns: 3,
+    data: props.gridData,
+    onLoadMore: props.loadMore,
+    onSlideMore: props.slideMore,
+    limit: props.limit,
+    offset: props.offset,
+    isFetching: props.isFetching,
+    canFetch: props.canFetch
   }
 
   return (
     <View>
-      <Grid {...gridProps}/>
+      <Grid {...gridProps} />
       {
         props.brands.map(b => (
           <View key={b.id} style={styles.brandContainer}>
@@ -71,12 +77,16 @@ const BrandList = (props) => {
           </View>
         ))
       }
-      <LoadMore
-        onLoadMore={props.loadMore}
-        offset={props.offset}
-        limit={props.limit}
-        canFetch={props.canFetch}
-        isFetching={props.isFetching} />
+      {
+        props.canFetch && (
+          <LoadMore
+            onLoadMore={props.loadMore}
+            offset={props.offset}
+            limit={props.limit}
+            canFetch={props.canFetch}
+            isFetching={props.isFetching} />
+        )
+      }
     </View>
   )
 }

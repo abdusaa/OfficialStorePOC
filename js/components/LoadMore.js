@@ -2,7 +2,6 @@ import React from 'react'
 import { Button } from 'react-native'
 
 const LoadMore = (props) => {
-  console.log('LoadMore props', props)
   return (
     <Button
       title="Load More"

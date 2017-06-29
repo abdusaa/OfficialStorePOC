@@ -4,7 +4,8 @@ import {
   FETCH_CAMPAIGNS,
   FETCH_BANNERS,
   FETCH_BRANDS,
-  ADD_TO_WISHLIST
+  ADD_TO_WISHLIST,
+  SLIDE_BRANDS
 } from '../actions/actions'
 
 const campaigns = (state = {
@@ -70,6 +71,7 @@ const brands = (state = {
   grid: {
     data: [],
     index: 0,
+    itemsToShow: 8,
   }
 }, action) => {
   switch (action.type) {
@@ -89,30 +91,51 @@ const brands = (state = {
 
       const getVisibleGridData = (brands, count) => {
         const data = []
-        let howMany = this.state.itemsToShow
-        let index = this.state.gridIndex
+        let howMany = state.grid.itemsToShow
+        let index = state.grid.index
 
         while (howMany--) {
           data.push(brands[index])
           index = (index + 1) % count
         }
-
         return {
           data,
-          index
+          index,
+          itemsToShow: 8
         }
       }
       return {
         items,
         isFetching: false,
         pagination,
-        totalBrands
+        totalBrands,
+        grid: getVisibleGridData(items, totalBrands)
       }
       return state
     case `${FETCH_BRANDS}_${REJECTED}`:
       return {
         ...state,
         isFetching: false,
+      }
+    case SLIDE_BRANDS:
+      const getVisibleGridData1 = (brands, count) => {
+        const data = []
+        let howMany = state.grid.itemsToShow
+        let index = state.grid.index
+
+        while (howMany--) {
+          data.push(brands[index])
+          index = (index + 1) % count
+        }
+        return {
+          data,
+          index,
+          itemsToShow: 8
+        }
+      }
+      return {
+        ...state,
+        grid: getVisibleGridData1(state.items, state.totalBrands)
       }
 
     case `${ADD_TO_WISHLIST}_${PENDING}`:

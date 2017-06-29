@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import LoadMore from '../components/LoadMore'
-import { fetchBrands } from '../actions/actions'
+import { fetchBrands, slideBrands } from '../actions/actions'
 import BrandList from '../components/brandList'
 
 class BrandContainer extends Component {
@@ -23,16 +23,17 @@ class BrandContainer extends Component {
 
     const bannerListProps = {
       brands: this.props.brands.items,
+      gridData: this.props.brands.grid.data,
       offset,
       limit,
       canFetch,
       isFetching,
       loadMore: this.props.loadMore,
+      slideMore: this.props.slideMore
     }
 
     return (
-      this.props.brands.isFetching ? null :
-        <BrandList {...bannerListProps} />
+      <BrandList {...bannerListProps} />
     )
   }
 }
@@ -46,7 +47,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    loadMore: bindActionCreators(fetchBrands, dispatch)
+    loadMore: bindActionCreators(fetchBrands, dispatch),
+    slideMore: bindActionCreators(slideBrands, dispatch),
   }
 }
 

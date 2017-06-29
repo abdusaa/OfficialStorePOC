@@ -69,6 +69,11 @@ export const fetchBrands = (limit, offset) => ({
     })
 })
 
+export const SLIDE_BRANDS = 'SLIDE_BRANDS'
+export const slideBrands = () => ({
+  type: SLIDE_BRANDS
+})
+
 function getProductIdList(products) {
   const productIdList = []
   products.forEach((product) => {

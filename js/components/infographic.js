@@ -1,9 +1,12 @@
 import React from 'react'
-import { View, StyleSheet, Image, Text } from 'react-native'
+import { View, StyleSheet, Image, Text, Dimensions } from 'react-native'
 import OriginalImage from './img/icon-original.png'
 import ServiceImage from './img/icon-service.png'
 import PromotionImage from './img/icon-promotion.png'
 import QualityImage from './img/icon-free-installment.png'
+
+const {height, width, fontScale} = Dimensions.get('window');
+const scale = width/375
 
 const infographic = () => {
   return (
@@ -24,7 +27,7 @@ const infographic = () => {
           </View>
         </View>
       </View>
-      <View style={styles.osInfoContent}>
+       <View style={styles.osInfoContent}>
         <View style={styles.osInfoImgWrap}>
           <Image source={ServiceImage} style={styles.osInfoImg} />
         </View>
@@ -62,7 +65,7 @@ const infographic = () => {
             <Text style={styles.osInfoContentParaText}>Cicilan bunga 0% dan bebas biaya admin untuk tenor 3, 6, 12, 18, sampai 24 bulan.</Text>
           </View>
         </View>
-      </View>
+      </View> 
     </View>
   )
 }
@@ -73,6 +76,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     paddingBottom: 10,
     paddingLeft: 10,
+    width: Dimensions.get('window').width
   },
   osInfoContent: {
     flex: 1,
@@ -83,28 +87,30 @@ const styles = StyleSheet.create({
 
   },
   osInfoImgWrap: {
-    flex: 1 / 4
+    flex: 1 / 4,
+    width: 89,
   },
   osInfoImg: {
-    width: 100,
+    width: 80,
   },
   osInfoContentText: {
     paddingLeft: 10,
     flex: 3 / 4
   },
   osInfoHeading: {
-    fontSize: 16,
+    fontSize: Math.round(scale * 14),
     fontWeight: '600',
     marginTop: 5,
   },
   osInfoContentPara: {
     marginTop: 5,
+    margin: 0,
   },
   osInfoContentParaText: {
-    fontSize: 14,
+    fontSize: 12,
+    lineHeight: 16,
     textAlign: 'auto',
   }
-
 })
 
 export default infographic

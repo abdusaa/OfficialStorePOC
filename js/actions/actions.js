@@ -1,24 +1,25 @@
 import axios from 'axios'
 import find from 'lodash/find'
 
-const ENDPOINT = 'https://mojito.tokopedia.com/os/api/v1/brands'
+const MOJITO_HOSTNAME = 'https://mojito.tokopedia.com'
+const TOME_HOSTNAME = 'https://tome.tokopedia.com'
 
 export const FETCH_CAMPAIGNS = 'FETCH_CAMPAIGNS'
 export const fetchCampaigns = () => ({
   type: FETCH_CAMPAIGNS,
-  payload: axios.get('https://mojito.tokopedia.com/os/api/v1/brands/microsite/campaigns?device=lite&full_domain=tokopedia.lite:3000&image_size=200&image_square=true')
+  payload: axios.get(`${MOJITO_HOSTNAME}/os/api/v1/brands/microsite/campaigns?device=lite&full_domain=tokopedia.lite:3000&image_size=200&image_square=true`)
 })
 
 export const FETCH_BANNERS = 'FETCH_BANNERS'
 export const fetchBanners = () => ({
   type: FETCH_BANNERS,
-  payload: axios.get('https://mojito.tokopedia.com/os/api/v1/brands/microsite/banners?device=2')
+  payload: axios.get(`${MOJITO_HOSTNAME}/os/api/v1/brands/microsite/banners?device=2`)
 })
 
 export const FETCH_BRANDS = 'FETCH_BRANDS'
 export const fetchBrands = (limit, offset) => ({
   type: FETCH_BRANDS,
-  payload: axios.get(`https://mojito.tokopedia.com/os/api/v1/brands/list?device=lite&microsite=true&user_id=0&limit=${limit}&offset=${offset}`)
+  payload: axios.get(`${MOJITO_HOSTNAME}/os/api/v1/brands/list?device=lite&microsite=true&user_id=0&limit=${limit}&offset=${offset}`)
     .then(response => {
       const brands = response.data.data
       const total_brands = response.data.total_brands
@@ -35,7 +36,7 @@ export const fetchBrands = (limit, offset) => ({
       shopIds = shopIds.toString()
       const shopCount = shopIds.length
 
-      return axios.get(`${ENDPOINT}/microsite/products?device=lite&source=osmicrosite&rows=4&full_domain=tokopedia.lite:3000&ob=11&image_size=200&image_square=true&brandCount=${shopCount}&brands=${shopIds}`)
+      return axios.get(`${MOJITO_HOSTNAME}/os/api/v1/brands/microsite/products?device=lite&source=osmicrosite&rows=4&full_domain=tokopedia.lite:3000&ob=11&image_size=200&image_square=true&brandCount=${shopCount}&brands=${shopIds}`)
         .then(response => response.data.data.brands)
         .then(brandsProducts => {
           shopList = shopList.map(shop => {
@@ -91,7 +92,10 @@ function getProductIdList(products) {
 export const ADD_TO_WISHLIST = 'ADD_TO_WISHLIST'
 export const addToWishlist = (productId) => ({
   type: ADD_TO_WISHLIST,
-  payload: axios.post(`https://mojito.tokopedia.com/v1/products/${productId}/wishlist`)
+  payload: axios.post(`${MOJITO_HOSTNAME}/v1/products/${productId}/wishlist`)
 })
+
+export const ADD_TO_FAVOURITE = 'ADD_TO_FAVOURITE'
+
 
 

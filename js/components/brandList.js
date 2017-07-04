@@ -17,11 +17,13 @@ const BrandList = (props) => {
     canFetch: props.canFetch
   }
 
+  const validBrands = props.brands.filter(brand => brand && brand.microsite_url && brand.products.length && brand.logo_url)
+
   return (
     <View>
       <Grid {...gridProps} />
       {
-        props.brands.map(b => (
+        validBrands.map(b => (
           <View key={b.id} style={styles.brandContainer}>
             <View style={styles.shopHeadContainer}>
               <View style={styles.shopImageWrapper}>
@@ -34,7 +36,7 @@ const BrandList = (props) => {
                 {b.name}
               </Text>
               {/* <Button
-                onPress={() => {}}
+                onPress={() => { }}
                 title="Favoritkan"
                 color="#42b549"
               /> */}
@@ -52,21 +54,37 @@ const BrandList = (props) => {
                         ellipsizeMode='tail'
                         numberOfLines={2}>{p.name}
                       </Text>
-                      <View style={styles.productNameContainer}>
+                      <View style={styles.productAttributeContainer}>
                         <Text style={styles.price} >{p.price}</Text>
                         {
                           p.badges.map((b, i) => b.title === 'Free Return' ? (
-                            <Image source={{ uri: b.image_url }} style={styles.badgeImage} key={i} />
+                            <View key={i}>
+                            <Image source={{ uri: b.image_url }} style={styles.badgeImage} />
+                            </View>
                           ) : null)
                         }
                       </View>
                       <View style={styles.label}>
                         {
-                          p.labels.map((l, index) => (
-                            <View style={styles.productLabel} key={index}>
-                              <Text style={styles.labelText}>{l.title}</Text>
-                            </View>
-                          ))
+                          p.labels.map((l, index) => {
+                            let labelTitle = l.title
+                            if (l.title.indexOf('Cashback') > -1) {
+                              labelTitle = 'Cashback'
+                            }
+                            const key = `${p.id}-${labelTitle}`
+                            switch (labelTitle) {
+                              case 'PO':
+                              case 'Grosir':
+                                return (
+                                  <View style={styles.productLabel} key={index}>
+                                    <Text style={styles.labelText}>{l.title}</Text>
+                                  </View>)
+                              case 'Cashback':
+                                return null
+                              default:
+                                return null
+                            }
+                          })
                         }
                       </View>
                     </View>
@@ -141,12 +159,13 @@ const styles = StyleSheet.create({
   price: {
     color: '#ff5722',
     fontSize: 13,
-    lineHeight: 18
+    lineHeight: 18,
   },
-  productNameContainer: {
+  productAttributeContainer: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   productName: {
     width: 135,

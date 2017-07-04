@@ -81,11 +81,9 @@ const brands = (state = {
         isFetching: true,
       }
     case `${FETCH_BRANDS}_${FULFILLED}`:
-      let brandsData = action.payload.data || []
-      let brands = brandsData.filter(brand => brand && brand.microsite_url && brand.products.length && brand.logo_url)
-      const invalidBrandsCount = brandsData.length - brands.length
-      const totalBrands = action.payload.total_brands - invalidBrandsCount 
-      const items = [...state.items, ...brands]
+      const brandsData = action.payload.data || []
+      const totalBrands = action.payload.total_brands
+      const items = [...state.items, ...brandsData]
       const pagination = {
         ...state.pagination,
         offset: items.length

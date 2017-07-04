@@ -7,14 +7,15 @@ class CampaignContainer extends Component {
   componentDidMount() {
     const { dispatch } = this.props
     dispatch(fetchCampaigns())
-    dispatch(addToWishlist(38185014))
+    // dispatch(addToWishlist(38185014))
   }
 
   render() {
     const campaigns = this.props.campaigns.items
     return (
       this.props.campaigns.isFetching ? null :
-      <CampaignList campaigns={campaigns}/>
+      <CampaignList
+        campaigns={campaigns}/>
     )
   }
 }

@@ -5,11 +5,13 @@ import {
   View,
   ListView,
   StyleSheet,
-  Image
+  Image,
+  Linking,
 } from 'react-native'
+// import Icon from 'react-native-vector-icons/EvilIcons';
 import WishListButton from '../common/WishlistButton'
 
-const CampaignList = ({ campaigns }) => {
+const CampaignList = ({ campaigns, onViewAllTap }) => {
   const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
   const campaignsData = ds.cloneWithRows(campaigns)
 
@@ -44,7 +46,34 @@ const renderCampaign = (c) => {
           <View style={styles.priceWrapper}>
             <Text style={styles.price}>{products[j].data.price}</Text>
           </View>
-          {/* <WishListButton /> */}
+          <View style={styles.productBadgeWrapper}>
+            {
+              products[j].data.labels.map((l, index) => {
+                let labelTitle = l.title
+                if (l.title.indexOf('Cashback') > -1) {
+                  labelTitle = 'Cashback'
+                }
+                const key = `${products[j].id}-${labelTitle}`
+                switch (labelTitle) {
+                  case 'PO':
+                  case 'Grosir':
+                    return (
+                      <View style={styles.productLabel} key={index}>
+                        <Text style={styles.labelText}>{l.title}</Text>
+                      </View>)
+                  case 'Cashback':
+                    return (
+                      <View style={styles.productCashback} key={index}>
+                        <Text style={styles.cashbackText}>{l.title}</Text>
+                      </View>
+                    )
+                  default:
+                    return null
+                }
+              })
+            }
+          </View>
+          {/* <WishListButton />  */}
           <View style={styles.shopSection}>
             <View style={styles.shopImageWrapper}>
               <Image source={{ uri: products[j].brand_logo }} style={styles.shopImage} />
@@ -68,8 +97,16 @@ const renderCampaign = (c) => {
       <Text style={styles.titleText}>{c.title}</Text>
       <Image source={{ uri: c.mobile_url }} style={{ height: 110 }} />
       {productGrid}
+      <View style={styles.viewAll}>
+        <Text style={styles.viewAllText} onPress={() => Linking.openURL(c.redirect_url_mobile)}>View All > </Text>
+        {/* <Icon name='chevron-right' size={30} /> */}
+      </View>
     </View >
   )
+}
+
+const _onClick = () => {
+
 }
 
 CampaignList.propTypes = {
@@ -122,11 +159,29 @@ const styles = StyleSheet.create({
     height: 185,
     borderRadius: 3,
   },
+  productBadgeWrapper: {
+    height: 27,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  productCashback: {
+    borderRadius: 3,
+    marginRight: 3,
+    padding: 3,
+    backgroundColor: '#42b549',
+  },
+  cashbackText: {
+    color: '#fff',
+    fontSize: 10,
+  },
   shopSection: {
     flex: 1,
     flexDirection: 'row',
     padding: 10,
-    borderStyle: 'dashed',
+    // borderStyle: 'dashed',
     borderTopWidth: 1,
     borderColor: '#e0e0e0',
     justifyContent: 'center',
@@ -148,7 +203,32 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginBottom: 5,
     marginRight: 0,
-  }
+  },
+  viewAll: {
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    borderBottomWidth: 1,
+    borderColor: '#e0e0e0',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  viewAllText: {
+    color: '#42b549',
+    fontSize: 13,
+  },
+  productLabel: {
+    padding: 3,
+    borderColor: '#e0e0e0',
+    borderWidth: 1,
+    marginRight: 3,
+    padding: 3,
+    backgroundColor: '#fff',
+    borderRadius: 3,
+  },
+  labelText: {
+    fontSize: 10,
+  },
 });
 
 export default CampaignList

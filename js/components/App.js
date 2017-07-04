@@ -5,6 +5,7 @@ import CampaignContainer from '../containers/campaignContainer'
 import BrandContainer from '../containers/brandContainer'
 import Infographic from '../components/infographic'
 import BackToTop from '../common/BackToTop/backToTop'
+import Seo from '../components/seo'
 
 export default class App extends Component {
   onBackToTopTap = () => {
@@ -19,6 +20,7 @@ export default class App extends Component {
           <CampaignContainer />
           <BrandContainer />
           <Infographic />
+          <Seo />
         </ScrollView>
         <BackToTop onTap={this.onBackToTopTap} />
       </View>

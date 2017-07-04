@@ -1,6 +1,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { View, Text, Image, ScrollView, StyleSheet, Button } from 'react-native'
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Button,
+  TouchableWithoutFeedback,
+  Linking
+} from 'react-native'
 import LoadMore from './LoadMore'
 import Grid from '../common/grid/grid'
 
@@ -27,14 +36,20 @@ const BrandList = (props) => {
           <View key={b.id} style={styles.brandContainer}>
             <View style={styles.shopHeadContainer}>
               <View style={styles.shopImageWrapper}>
-                <Image style={styles.shopImage} source={{ uri: b.logo_url }} />
+                <TouchableWithoutFeedback onPress={() => Linking.openURL(b.shop_mobile_url)}>
+                  <Image style={styles.shopImage} source={{ uri: b.logo_url }} />
+                </TouchableWithoutFeedback>
               </View>
-              <Text
-                style={styles.shopName}
-                ellipsizeMode='tail'
-                numberOfLines={1}>
-                {b.name}
-              </Text>
+              <TouchableWithoutFeedback onPress={() => Linking.openURL(b.shop_mobile_url)} >
+                <View>
+                  <Text
+                    style={styles.shopName}
+                    ellipsizeMode='tail'
+                    numberOfLines={1}>
+                    {b.name}
+                  </Text>
+                </View>
+              </TouchableWithoutFeedback>
               {/* <Button
                 onPress={() => { }}
                 title="Favoritkan"
@@ -49,17 +64,21 @@ const BrandList = (props) => {
                 {
                   b.products.map(p => (
                     <View style={styles.thumb} key={p.id}>
-                      <Image style={styles.productImage} source={{ uri: p.image_url }} />
-                      <Text style={styles.productName}
-                        ellipsizeMode='tail'
-                        numberOfLines={2}>{p.name}
-                      </Text>
+                      <TouchableWithoutFeedback onPress={() => Linking.openURL(p.url)}>
+                        <View>
+                          <Image style={styles.productImage} source={{ uri: p.image_url }} />
+                          <Text style={styles.productName}
+                            ellipsizeMode='tail'
+                            numberOfLines={2}>{p.name}
+                          </Text>
+                        </View>
+                      </TouchableWithoutFeedback>
                       <View style={styles.productAttributeContainer}>
                         <Text style={styles.price} >{p.price}</Text>
                         {
                           p.badges.map((b, i) => b.title === 'Free Return' ? (
                             <View key={i}>
-                            <Image source={{ uri: b.image_url }} style={styles.badgeImage} />
+                              <Image source={{ uri: b.image_url }} style={styles.badgeImage} />
                             </View>
                           ) : null)
                         }

@@ -8,6 +8,20 @@ export const FETCH_CAMPAIGNS = 'FETCH_CAMPAIGNS'
 export const fetchCampaigns = () => ({
   type: FETCH_CAMPAIGNS,
   payload: axios.get(`${MOJITO_HOSTNAME}/os/api/v1/brands/microsite/campaigns?device=lite&full_domain=tokopedia.lite:3000&image_size=200&image_square=true`)
+    .then(data => data.data.data.campaigns)
+    .then(campaigns => {
+      return axios.get(`${MOJITO_HOSTNAME}/os/api/v1/brands/microsite/banners?device=2`)
+        .then(data => data.data.data)
+        .then(data => data.banners)
+        .then(banners => {
+          const promoBanner = find(banners, { html_id: 6 })
+          console.log(promoBanner)
+          campaigns.splice(2,0, promoBanner)
+          return {
+            data: campaigns,
+          }
+        })
+    })
 })
 
 export const FETCH_BANNERS = 'FETCH_BANNERS'

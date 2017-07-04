@@ -18,7 +18,7 @@ const campaigns = (state = {
         isFetching: true,
       })
     case `${FETCH_CAMPAIGNS}_${FULFILLED}`:
-      const campaignData = action.payload.data.data.campaigns
+      const campaignData = action.payload.data
       return {
         items: state.items.length === 0 ? [...state.items, ...campaignData] : [...state.items],
         isFetching: false,

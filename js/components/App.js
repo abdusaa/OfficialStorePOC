@@ -8,7 +8,7 @@ import BackToTop from '../common/BackToTop/backToTop'
 
 export default class App extends Component {
   onBackToTopTap = () => {
-    this.refs.scrollView.scrollTo({x: 0, y: 0, animatd: true});
+    this.refs.scrollView.scrollTo({ x: 0, y: 0, animatd: true });
   }
 
   render() {

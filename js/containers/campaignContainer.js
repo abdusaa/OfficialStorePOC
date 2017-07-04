@@ -14,8 +14,8 @@ class CampaignContainer extends Component {
     const campaigns = this.props.campaigns.items
     return (
       this.props.campaigns.isFetching ? null :
-      <CampaignList
-        campaigns={campaigns}/>
+        <CampaignList
+          campaigns={campaigns} />
     )
   }
 }

@@ -7,11 +7,12 @@ import {
   StyleSheet,
   Image,
   Linking,
+  TouchableWithoutFeedback,
 } from 'react-native'
 // import Icon from 'react-native-vector-icons/EvilIcons';
 import WishListButton from '../common/WishlistButton'
 
-const CampaignList = ({ campaigns, onViewAllTap }) => {
+const CampaignList = ({ campaigns, onCampaignPress }) => {
   const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
   const campaignsData = ds.cloneWithRows(campaigns)
 
@@ -30,77 +31,100 @@ const renderCampaign = (c) => {
   const products = c.Products
   const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
   const productGrid = []
-  for (let i = 0; i < products.length; i += 2) {
-    const productRow = []
-    for (let j = i; j < i + 2; j += 1) {
-      if (!products[j]) {
-        break
+  if (products) {
+    for (let i = 0; i < products.length; i += 2) {
+      const productRow = []
+      for (let j = i; j < i + 2; j += 1) {
+        if (!products[j]) {
+          break
+        }
+        productRow.push(
+          <View style={styles.productCell} key={products[j].data.id}>
+            <TouchableWithoutFeedback onPress={() => Linking.openURL(products[j].data.url)}>
+              <View>
+                <View style={styles.productImageWrapper}>
+                  <Image source={{ uri: products[j].data.image_url }} style={styles.productImage} />
+                </View>
+                <Text style={styles.productName} ellipsizeMode='tail'
+                  numberOfLines={2}>{products[j].data.name}</Text>
+              </View>
+            </TouchableWithoutFeedback>
+            <View style={styles.priceWrapper}>
+              <Text style={styles.price}>{products[j].data.price}</Text>
+            </View>
+            <View style={styles.productBadgeWrapper}>
+              {
+                products[j].data.labels.map((l, index) => {
+                  let labelTitle = l.title
+                  if (l.title.indexOf('Cashback') > -1) {
+                    labelTitle = 'Cashback'
+                  }
+                  const key = `${products[j].id}-${labelTitle}`
+                  switch (labelTitle) {
+                    case 'PO':
+                    case 'Grosir':
+                      return (
+                        <View style={styles.productLabel} key={index}>
+                          <Text style={styles.labelText}>{l.title}</Text>
+                        </View>)
+                    case 'Cashback':
+                      return (
+                        <View style={styles.productCashback} key={index}>
+                          <Text style={styles.cashbackText}>{l.title}</Text>
+                        </View>
+                      )
+                    default:
+                      return null
+                  }
+                })
+              }
+            </View>
+            {/* <WishListButton />  */}
+            <TouchableWithoutFeedback onPress={() => Linking.openURL(products[j].data.shop.url)}>
+              <View style={styles.shopSection}>
+                <View style={styles.shopImageWrapper}>
+                  <Image source={{ uri: products[j].brand_logo }} style={styles.shopImage} />
+                </View>
+                <View style={styles.shopNameWrapper}>
+                  <Text style={{ lineHeight: 15 }} ellipsizeMode='tail'
+                    numberOfLines={1}>{products[j].data.shop.name}</Text>
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        )
       }
-      productRow.push(
-        <View style={styles.productCell} key={products[j].data.id}>
-          <View style={styles.productImageWrapper}>
-            <Image source={{ uri: products[j].data.image_url }} style={styles.productImage} />
-          </View>
-          <Text style={styles.productName} ellipsizeMode='tail'
-            numberOfLines={2}>{products[j].data.name}</Text>
-          <View style={styles.priceWrapper}>
-            <Text style={styles.price}>{products[j].data.price}</Text>
-          </View>
-          <View style={styles.productBadgeWrapper}>
-            {
-              products[j].data.labels.map((l, index) => {
-                let labelTitle = l.title
-                if (l.title.indexOf('Cashback') > -1) {
-                  labelTitle = 'Cashback'
-                }
-                const key = `${products[j].id}-${labelTitle}`
-                switch (labelTitle) {
-                  case 'PO':
-                  case 'Grosir':
-                    return (
-                      <View style={styles.productLabel} key={index}>
-                        <Text style={styles.labelText}>{l.title}</Text>
-                      </View>)
-                  case 'Cashback':
-                    return (
-                      <View style={styles.productCashback} key={index}>
-                        <Text style={styles.cashbackText}>{l.title}</Text>
-                      </View>
-                    )
-                  default:
-                    return null
-                }
-              })
-            }
-          </View>
-          {/* <WishListButton />  */}
-          <View style={styles.shopSection}>
-            <View style={styles.shopImageWrapper}>
-              <Image source={{ uri: products[j].brand_logo }} style={styles.shopImage} />
-            </View>
-            <View style={styles.shopNameWrapper}>
-              <Text style={{ lineHeight: 15 }} ellipsizeMode='tail'
-                numberOfLines={1}>{products[j].data.shop.name}</Text>
-            </View>
-          </View>
+      productGrid.push(
+        <View style={styles.productRow} key={i}>
+          {productRow}
         </View>
       )
     }
-    productGrid.push(
-      <View style={styles.productRow} key={i}>
-        {productRow}
-      </View>
-    )
   }
   return (
     <View style={{ paddingBottom: 20 }}>
-      <Text style={styles.titleText}>{c.title}</Text>
-      <Image source={{ uri: c.mobile_url }} style={{ height: 110 }} />
+      {
+        c.html_id === 6 ? null : <Text style={styles.titleText}>{c.title}</Text>
+      }
+      {
+        c.html_id === 6 ? (
+          <TouchableWithoutFeedback onPress={() => Linking.openURL(c.redirect_url)}>
+            <Image source={{ uri: c.image_url }} style={{ height: 110 }} />
+          </TouchableWithoutFeedback>
+        ) :
+          (
+            <TouchableWithoutFeedback onPress={() => Linking.openURL(c.redirect_url_mobile)}>
+              <Image source={{ uri: c.mobile_url }} style={{ height: 110 }} />
+            </TouchableWithoutFeedback>
+          )
+      }
       {productGrid}
-      <View style={styles.viewAll}>
-        <Text style={styles.viewAllText} onPress={() => Linking.openURL(c.redirect_url_mobile)}>View All > </Text>
-        {/* <Icon name='chevron-right' size={30} /> */}
-      </View>
+      {
+        c.html_id === 6 ? null : (<View style={styles.viewAll}>
+          <Text style={styles.viewAllText} onPress={() => Linking.openURL(c.redirect_url_mobile)}>View All > </Text>
+          {/* <Icon name='chevron-right' size={30} /> */}
+        </View>)
+      }
     </View >
   )
 }

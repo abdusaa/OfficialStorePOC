@@ -2,7 +2,11 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import LoadMore from '../components/LoadMore'
-import { fetchBrands, slideBrands } from '../actions/actions'
+import {
+  fetchBrands,
+  slideBrands,
+  addToFavourite
+} from '../actions/actions'
 import BrandList from '../components/brandList'
 
 class BrandContainer extends Component {
@@ -49,6 +53,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     loadMore: bindActionCreators(fetchBrands, dispatch),
     slideMore: bindActionCreators(slideBrands, dispatch),
+    addShopToFav: bindActionCreators(addToFavourite, dispatch),
   }
 }
 

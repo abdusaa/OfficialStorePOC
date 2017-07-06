@@ -10,7 +10,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native'
 // import Icon from 'react-native-vector-icons/EvilIcons';
-import WishListButton from '../common/WishlistButton'
+import WishListButton from '../common/Wishlist/WishlistButton'
 
 const CampaignList = ({ campaigns, onCampaignPress }) => {
   const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
@@ -28,9 +28,10 @@ const CampaignList = ({ campaigns, onCampaignPress }) => {
 }
 
 const renderCampaign = (c) => {
-  const products = c.Products
+  const products = c.Products || []
   const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
   const productGrid = []
+  let isDiscount = false
   if (products) {
     for (let i = 0; i < products.length; i += 2) {
       const productRow = []
@@ -38,6 +39,11 @@ const renderCampaign = (c) => {
         if (!products[j]) {
           break
         }
+
+        if (products[j].data.discount_percentage) {
+          isDiscount = true
+        }
+
         productRow.push(
           <View style={styles.productCell} key={products[j].data.id}>
             <TouchableWithoutFeedback onPress={() => Linking.openURL(products[j].data.url)}>
@@ -49,8 +55,16 @@ const renderCampaign = (c) => {
                   numberOfLines={2}>{products[j].data.name}</Text>
               </View>
             </TouchableWithoutFeedback>
+            <View style={styles.productGridPrice}>
+              <View style={styles.productGridNormalPrice}>
+                <Text style={styles.productGridNormalPriceText}>{products[j].data.original_price}</Text>
+              </View>
+            </View>
             <View style={styles.priceWrapper}>
               <Text style={styles.price}>{products[j].data.price}</Text>
+              {/* <View style={styles.productCashback} key={1}>
+                <Text style={styles.cashbackText}>ggsgsgs</Text>
+              </View> */}
             </View>
             <View style={styles.productBadgeWrapper}>
               {
@@ -79,7 +93,6 @@ const renderCampaign = (c) => {
                 })
               }
             </View>
-            {/* <WishListButton />  */}
             <TouchableWithoutFeedback onPress={() => Linking.openURL(products[j].data.shop.url)}>
               <View style={styles.shopSection}>
                 <View style={styles.shopImageWrapper}>
@@ -91,6 +104,9 @@ const renderCampaign = (c) => {
                 </View>
               </View>
             </TouchableWithoutFeedback>
+            <WishListButton
+              isWishlist={products[j].data.is_wishlist || false}
+              productId={products[j].data.id} />
           </View>
         )
       }
@@ -159,6 +175,8 @@ const styles = StyleSheet.create({
   },
   priceWrapper: {
     height: 34,
+    flex: 1,
+    flexDirection: 'row'
   },
   price: {
     color: '#ff5722',
@@ -253,6 +271,17 @@ const styles = StyleSheet.create({
   labelText: {
     fontSize: 10,
   },
+  productGridPrice: {
+    height: 34,
+  },
+  productGridNormalPrice: {
+    paddingHorizontal: 10,
+  },
+  productGridNormalPriceText: {
+    fontSize: 10,
+    fontWeight: '600',
+    textDecorationLine: 'line-through',
+  }
 });
 
 export default CampaignList

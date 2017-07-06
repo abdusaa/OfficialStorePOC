@@ -5,7 +5,10 @@ import {
   FETCH_BANNERS,
   FETCH_BRANDS,
   ADD_TO_WISHLIST,
-  SLIDE_BRANDS
+  SLIDE_BRANDS,
+  ADD_TO_FAVOURITE,
+  REMOVE_FROM_FAVOURITE,
+  REMOVE_FROM_WISHLIST,
 } from '../actions/actions'
 
 const campaigns = (state = {
@@ -33,6 +36,52 @@ const campaigns = (state = {
       return state
     case `${ADD_TO_WISHLIST}_${REJECTED}`:
       return state
+    case ADD_TO_WISHLIST:
+      return {
+        ...state,
+        items: state.items.map(b => {
+          return {
+            ...b,
+            Products: b.Products.map(p => {
+              if (action.payload === p.data.id) {
+                return {
+                  ...p,
+                  data: {
+                    ...p.data,
+                    is_wishlist: true
+                  }
+                }
+              } else {
+                return p
+              }
+            })
+          }
+
+        })
+      }
+    case REMOVE_FROM_WISHLIST:
+      return {
+        ...state,
+        items: state.items.map(b => {
+          return {
+            ...b,
+            Products: b.Products.map(p => {
+              if (action.payload === p.data.id) {
+                return {
+                  ...p,
+                  data: {
+                    ...p.data,
+                    is_wishlist: false
+                  }
+                }
+              } else {
+                return p
+              }
+            })
+          }
+
+        })
+      }
 
     default:
       return state
@@ -144,6 +193,72 @@ const brands = (state = {
       return state
     case `${ADD_TO_WISHLIST}_${REJECTED}`:
       return state
+    case ADD_TO_WISHLIST:
+      return {
+        ...state,
+        items: state.items.map(b => {
+          return {
+            ...b,
+            products: b.products.map(p => {
+              if (action.payload === p.id) {
+                return {
+                  ...p,
+                  is_wishlist: true
+                }
+              } else {
+                return p
+              }
+            })
+          }
+
+        })
+      }
+    case REMOVE_FROM_WISHLIST:
+      return {
+        ...state,
+        items: state.items.map(b => {
+          return {
+            ...b,
+            products: b.products.map(p => {
+              if (action.payload === p.id) {
+                return {
+                  ...p,
+                  is_wishlist: false
+                }
+              } else {
+                return p
+              }
+            })
+          }
+
+        })
+      }
+    case ADD_TO_FAVOURITE:
+      return {
+        ...state,
+        items: state.items.map(b => {
+          if (action.payload === b.id) {
+            return Object.assign({}, b, {
+              isFav: true
+            })
+          } else {
+            return b
+          }
+        })
+      }
+    case REMOVE_FROM_FAVOURITE:
+      return {
+        ...state,
+        items: state.items.map(b => {
+          if (action.payload === b.id) {
+            return Object.assign({}, b, {
+              isFav: false
+            })
+          } else {
+            return b
+          }
+        })
+      }
     default:
       return state
   }

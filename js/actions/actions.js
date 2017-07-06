@@ -15,7 +15,9 @@ export const fetchCampaigns = () => ({
         .then(data => data.banners)
         .then(banners => {
           const promoBanner = find(banners, { html_id: 6 })
-          campaigns.splice(2,0, promoBanner)
+          if (promoBanner) {
+            campaigns.splice(2, 0, promoBanner)
+          }
           return {
             data: campaigns,
           }
@@ -44,6 +46,7 @@ export const fetchBrands = (limit, offset) => ({
         microsite_url: shop.microsite_url,
         shop_mobile_url: shop.shop_mobile_url,
         shop_domain: shop.shop_domain,
+        isFav: false,
       }))
       let shopIds = brands.map(shop => shop.shop_id)
       shopIds = shopIds.toString()
@@ -105,10 +108,60 @@ function getProductIdList(products) {
 export const ADD_TO_WISHLIST = 'ADD_TO_WISHLIST'
 export const addToWishlist = (productId) => ({
   type: ADD_TO_WISHLIST,
-  payload: axios.post(`${MOJITO_HOSTNAME}/v1/products/${productId}/wishlist`)
+  payload: productId
+})
+
+export const REMOVE_FROM_WISHLIST = 'REMOVE_FROM_WISHLIST'
+export const removeFromWishlist = (productId) => ({
+  type: REMOVE_FROM_WISHLIST,
+  payload: productId
+})
+
+export const REMOVE_FROM_FAVOURITE = 'REMOVE_FROM_FAVOURITE'
+export const removeFromFavourite = (shopId) => ({
+  type: REMOVE_FROM_FAVOURITE,
+  payload: shopId,
 })
 
 export const ADD_TO_FAVOURITE = 'ADD_TO_FAVOURITE'
+export const addToFavourite = (shopId) => ({
+  type: ADD_TO_FAVOURITE,
+  payload: shopId,
+})
+/*
+export const addToFavourite = (userId, shopId, sessionId) => {
+  const sidCookie = `_SID_Tokopedia_Coba_=${sessionId}`
+  const config = {
+    url: `${TOME_HOSTNAME}/shop/favorite-shop`,
+    method: 'POST',
+    headers: {
+      origin: `https://m.tokopedia.com`,
+      referer: `https://m.tokopedia.com`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Cookie: sidCookie,
+      Authorization: undefined,
+    },
+    data: {
+      user_id: userId,
+      s_id: shopID,
+      ad_key: null,
+      action: 'fav_shop',
+      act: 'POST'
+    }
+  }
+
+  return {
+    type: ADD_TO_FAVOURITE,
+    payload: axios(config)
+      .then(response => {
+        console.log(response)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+}
+*/
 
 
 

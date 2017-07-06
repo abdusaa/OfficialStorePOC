@@ -4,6 +4,7 @@ import { Text, View, StyleSheet } from 'react-native'
 const seo = () => {
   return (
     <View style={styles.seoContainer}>
+      <View style={styles.seoContent}>
       <Text style={styles.seoHeading}>Belanja Produk Original & Branded di Official Store Tokopedia</Text>
       <View style={styles.seoPara}>
         <Text>Temukan aneka produk original dari brand resmi asli Indonesia dan Internasional. Di Official Store Tokopedia, anda bisa mendapatkan semua produk berkualitas dengan harga terbaik. Semua produk yang anda beli, dijual dan dikirim langsung oleh toko resmi. Produk di jamin asli / original, berkualitas tinggi, bergaransi resmi dan pelayanan terbaik. Belanja online di Official Store Tokopedia, anda bisa mendapatkan aneka penawaran langsung dari toko-toko resmi di Tokopedia.</Text>
@@ -13,6 +14,7 @@ const seo = () => {
       </View >
       <View style={styles.seoPara}>
         <Text>Belanja produk branded di Official Store Tokopedia, anda dapat menggunakan berbagai metode pembayaran seperti kartu kredit, bank transfer & mobile banking, Tokocash yang praktis, aman dan nyaman. Untuk anda yang ingin selalu up to date dengan produk-produk branded / original tanah air dan brand international, cek selalu Official Store Tokopedia. Dapatkan berbagai barang trendy, unik dan asli terbaru lebih cepat, dengan harga terjangkau dan lengkap hanya di Official Store.</Text>
+      </View>
       </View>
     </View>
   )

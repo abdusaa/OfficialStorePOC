@@ -12,6 +12,8 @@ import {
 } from 'react-native'
 import LoadMore from './LoadMore'
 import Grid from '../common/grid/grid'
+import FavouriteBtn from '../common/Favourite/favBtn'
+import WishlistBtn from '../common/Wishlist/WishlistButton'
 
 const BrandList = (props) => {
   const gridProps = {
@@ -50,11 +52,11 @@ const BrandList = (props) => {
                   </Text>
                 </View>
               </TouchableWithoutFeedback>
-              {/* <Button
-                onPress={() => { }}
-                title="Favoritkan"
-                color="#42b549"
-              /> */}
+              <View style={{ marginLeft: 'auto' }}>
+                <FavouriteBtn
+                  shopId={b.id}
+                  isFav={b.isFav} />
+              </View>
             </View>
             <View style={styles.productsWrapper}>
               <ScrollView
@@ -106,6 +108,7 @@ const BrandList = (props) => {
                           })
                         }
                       </View>
+                      <WishlistBtn isWishlist={p.is_wishlist} productId={p.id} />
                     </View>
                   ))
                 }
@@ -149,7 +152,7 @@ const styles = StyleSheet.create({
     borderColor: '#e0e0e0',
     flex: 1,
     flexDirection: 'row',
-    padding: 10
+    padding: 10,
   },
   shopImageWrapper: {
     borderWidth: 1,

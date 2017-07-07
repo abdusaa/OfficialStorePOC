@@ -16,11 +16,11 @@ export default class App extends Component {
     return (
       <View>
         <ScrollView ref="scrollView">
-          <BannerContainer />
-          <CampaignContainer />
+           <BannerContainer />
+          <CampaignContainer /> 
           <BrandContainer />
-          <Infographic />
-          <Seo />
+           <Infographic />
+          <Seo /> 
         </ScrollView>
         <BackToTop onTap={this.onBackToTopTap} />
       </View>

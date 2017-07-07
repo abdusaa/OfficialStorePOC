@@ -32,7 +32,7 @@ const renderCampaign = (c) => {
   const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
   const productGrid = []
   let isDiscount = false
-  if (products) {
+  if (products.length > 0) {
     for (let i = 0; i < products.length; i += 2) {
       const productRow = []
       for (let j = i; j < i + 2; j += 1) {
@@ -118,7 +118,7 @@ const renderCampaign = (c) => {
     }
   }
   return (
-    <View style={{ paddingBottom: 20 }}>
+    <View style={{ marginBottom: 10, backgroundColor: '#fff', borderTopWidth: 1, borderColor: '#e0e0e0'}}>
       {
         c.html_id === 6 ? null : <Text style={styles.titleText}>{c.title}</Text>
       }
@@ -137,7 +137,7 @@ const renderCampaign = (c) => {
       {productGrid}
       {
         c.html_id === 6 ? null : (<View style={styles.viewAll}>
-          <Text style={styles.viewAllText} onPress={() => Linking.openURL(c.redirect_url_mobile)}>View All > </Text>
+          <Text style={styles.viewAllText} onPress={() => Linking.openURL(c.redirect_url_mobile)}>Lihat Semua > </Text>
           {/* <Icon name='chevron-right' size={30} /> */}
         </View>)
       }
@@ -155,7 +155,6 @@ CampaignList.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
   },
   titleText: {
     fontSize: 16,

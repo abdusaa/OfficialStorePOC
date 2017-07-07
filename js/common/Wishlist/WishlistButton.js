@@ -28,12 +28,12 @@ class Wishlist extends Component {
     return (
       <View style={styles.wrapper}>
         <Touchable onPress={() => this._onTap(isWishlist, productId)}>
-          <View>
+           <View>
             {
               isWishlist ? (<Icon name='ios-heart' size={25} color="#f33960" />) :
                 (<Icon name='ios-heart-outline' size={25} />)
             }
-          </View>
+          </View> 
         </Touchable>
       </View>
     )

@@ -76,7 +76,10 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     paddingBottom: 10,
     paddingLeft: 10,
-    width: Dimensions.get('window').width
+    width: Dimensions.get('window').width,
+    backgroundColor: '#fff',
+    borderTopWidth: 1,
+    borderColor: '#e0e0e0',
   },
   osInfoContent: {
     flex: 1,

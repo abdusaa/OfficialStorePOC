@@ -23,7 +23,7 @@ const BannerList = ({ banners, onBannerPress, onViewAllPress }) => {
       <Swiper autoplay={true} showsPagination={false} height={185} autoplayTimeout={5}>
         {
           topBanners.map((banner, index) => (
-            <View key={banner.banner_id} style={{ paddingLeft: 5, paddingRight: 5 }}>
+            <View key={banner.banner_id}>
               <TouchableWithoutFeedback onPress={(e) => onBannerPress(e, banner)}>
                 <Image source={{ uri: banner.image_url }} style={styles.pageStyle}></Image>
               </TouchableWithoutFeedback>
@@ -59,7 +59,7 @@ var styles = StyleSheet.create({
   pageStyle: {
     alignItems: 'center',
     padding: 20,
-    width: width - 10,
+    width: width,
     height: 173,
   },
   viewPager: {

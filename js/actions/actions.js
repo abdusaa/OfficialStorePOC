@@ -15,8 +15,8 @@ export const fetchCampaigns = () => ({
         .then(data => data.banners)
         .then(banners => {
           const promoBanner = find(banners, { html_id: 6 })
-          promoBanner.Products = []
           if (promoBanner) {
+            promoBanner.Products = []
             campaigns.splice(2, 0, promoBanner)
           }
           return {

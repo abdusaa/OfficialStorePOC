@@ -12,6 +12,9 @@ import {
 // import Icon from 'react-native-vector-icons/EvilIcons';
 import WishListButton from '../common/Wishlist/WishlistButton'
 
+// base64 icon arrow left
+let iconArrowLeft = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAASCAMAAABYd88+AAAAJFBMVEVMaXFCtklEuE1CtklDtklCtklCt0pEt0tHvFFDt0pCtklCtUkTJ4UyAAAAC3RSTlMA9ibcW7RKQRJzkSHJrzwAAABNSURBVAjXZc5LDgAhCANQRMQP97+vspjaiax4ibaIqAlmlKhKINlR6Z96Ch+1RsT8aSGlHTU0pIwf+hvB4Vw74x60aPdsGALcNnHHugEqcwKnDQT24AAAAABJRU5ErkJggg=='
+
 const CampaignList = ({ campaigns, onCampaignPress }) => {
   const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
   const campaignsData = ds.cloneWithRows(campaigns)
@@ -102,6 +105,17 @@ const renderCampaign = (c) => {
                   <Text style={{ lineHeight: 15 }} ellipsizeMode='tail'
                     numberOfLines={1}>{products[j].data.shop.name}</Text>
                 </View>
+                {
+                  products[j].data.labels.map((badge, index) => {
+                    if (badge.title === 'Free Return') {
+                      return (
+                        <View style={styles.badgeFreeReturn}>
+                          <Image style={{resizeMode: 'contain', width: 20, height: 20}} source={badge.image_url} />
+                        </View>
+                      )
+                    }
+                  })
+                }
               </View>
             </TouchableWithoutFeedback>
             <WishListButton
@@ -118,14 +132,14 @@ const renderCampaign = (c) => {
     }
   }
   return (
-    <View style={{ marginBottom: 10, backgroundColor: '#fff', borderTopWidth: 1, borderColor: '#e0e0e0'}}>
+    <View style={{ backgroundColor: '#FFF', marginTop: 20, marginBottom: 10 }}>
       {
         c.html_id === 6 ? null : <Text style={styles.titleText}>{c.title}</Text>
       }
       {
         c.html_id === 6 ? (
           <TouchableWithoutFeedback onPress={() => Linking.openURL(c.redirect_url)}>
-            <Image source={{ uri: c.image_url }} style={{ height: 110 }} />
+            <Image source={{ uri: c.image_url }} style={{ resizeMode: 'contain', }} />
           </TouchableWithoutFeedback>
         ) :
           (
@@ -137,11 +151,12 @@ const renderCampaign = (c) => {
       {productGrid}
       {
         c.html_id === 6 ? null : (<View style={styles.viewAll}>
-          <Text style={styles.viewAllText} onPress={() => Linking.openURL(c.redirect_url_mobile)}>Lihat Semua > </Text>
+          <Text style={styles.viewAllText} onPress={() => Linking.openURL(c.redirect_url_mobile)}>View All </Text>
+          <Image source={{uri: iconArrowLeft}} style={styles.iconArrowLeft} />
           {/* <Icon name='chevron-right' size={30} /> */}
         </View>)
       }
-    </View >
+    </View>
   )
 }
 
@@ -155,6 +170,7 @@ CampaignList.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'rgba(0, 0, 0, 0.05)',
   },
   titleText: {
     fontSize: 16,
@@ -173,13 +189,13 @@ const styles = StyleSheet.create({
     borderColor: '#e0e0e0',
   },
   priceWrapper: {
-    height: 34,
+    height: 20,
     flex: 1,
     flexDirection: 'row'
   },
   price: {
     color: '#ff5722',
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: '600',
     lineHeight: 20,
     paddingHorizontal: 10,
@@ -192,6 +208,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   productImageWrapper: {
+    backgroundColor: '#FFF',
     borderBottomWidth: 1,
     borderColor: 'rgba(255,255,255,0)',
     padding: 10,
@@ -201,6 +218,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
   },
   productBadgeWrapper: {
+    //backgroundColor: 'red',
     height: 27,
     paddingVertical: 5,
     paddingHorizontal: 10,
@@ -222,10 +240,11 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     padding: 10,
-    // borderStyle: 'dashed',
+    //borderStyle: 'dashed',
     borderTopWidth: 1,
     borderColor: '#e0e0e0',
     justifyContent: 'center',
+    alignItems: 'center',
   },
   shopImage: {
     width: 28,
@@ -241,7 +260,7 @@ const styles = StyleSheet.create({
   shopNameWrapper: {
     flex: 3 / 4,
     marginTop: 7,
-    marginLeft: 10,
+    marginLeft: 7,
     marginBottom: 5,
     marginRight: 0,
   },
@@ -253,10 +272,16 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    alignItems: 'center',
   },
   viewAllText: {
     color: '#42b549',
     fontSize: 13,
+  },
+  iconArrowLeft: {
+    width: 6,
+    height: 10,
+    marginHorizontal: 10
   },
   productLabel: {
     padding: 3,
@@ -271,7 +296,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
   productGridPrice: {
-    height: 34,
+
   },
   productGridNormalPrice: {
     paddingHorizontal: 10,
@@ -279,7 +304,15 @@ const styles = StyleSheet.create({
   productGridNormalPriceText: {
     fontSize: 10,
     fontWeight: '600',
+    lineHeight: 20,
+    color: 'rgba(0,0,0,.5)',
     textDecorationLine: 'line-through',
+  },
+  badgeFreeReturn: {
+    width: 20,
+    height: 20,
+    //backgroundColor: 'black',
+    marginLeft: 4,
   }
 });
 

@@ -39,7 +39,10 @@ const Grid = ({ columns, data, onLoadMore, rows, limit, offset, onSlideMore, isF
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    marginBottom: 20,
+    borderBottomWidth: 1,
+    borderColor: '#E0E0E0',
   }
 })
 

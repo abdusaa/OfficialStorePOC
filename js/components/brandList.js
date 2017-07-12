@@ -43,7 +43,7 @@ const BrandList = (props) => {
                 </TouchableWithoutFeedback>
               </View>
               <TouchableWithoutFeedback onPress={() => Linking.openURL(b.shop_mobile_url)} >
-                <View>
+                <View style={styles.shopNameBox}>
                   <Text
                     style={styles.shopName}
                     ellipsizeMode='tail'
@@ -52,7 +52,7 @@ const BrandList = (props) => {
                   </Text>
                 </View>
               </TouchableWithoutFeedback>
-              <View style={{ marginLeft: 'auto' }}>
+              <View style={{ marginLeft: 'auto', flexDirection: 'row', alignItems: 'center' }}>
                 <FavouriteBtn
                   shopId={b.id}
                   isFav={b.isFav} />
@@ -164,6 +164,10 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 3,
   },
+  shopNameBox: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
   shopName: {
     marginTop: 5,//'5 5 8 10'
     marginRight: 5,
@@ -190,9 +194,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   productName: {
+    //backgroundColor: 'pink',
+    height: 40,
     width: 135,
-    paddingTop: 4,
-    paddingBottom: 4,
+    marginTop: 5
   },
   label: {
     flex: 1,

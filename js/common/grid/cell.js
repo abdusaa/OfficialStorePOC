@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image, StyleSheet } from 'react-native'
+import { View, Image, StyleSheet, Text } from 'react-native'
 import PropTypes from 'prop-types'
 import LoadMoreButton from './loadBtn'
 
@@ -13,17 +13,17 @@ const Cell = ({ isLastRowCell, isLastCell, data, loadMore, limit, offset, onSlid
         limit={limit}
         offset={offset}
         canFetch={canFetch}
-        isFetching={isFetching} />
+        isFetching={isFetching} /> 
     </View>
-  ) : getCellContent(data)
+  ) : getCellContent(data, isLastCell)
 
   return cellContent
 }
 
-const getCellContent = (data) => {
+const getCellContent = (data, isLastCell) => {
   if (data) {
     return (
-      <View style={styles.cellWrapper}>
+      <View style={isLastCell ? styles.cellWrapperWithoutBorder : styles.cellWrapper}>
         <Image style={styles.img} source={{ uri: data.microsite_url }} />
       </View>
     )
@@ -43,6 +43,12 @@ const styles = StyleSheet.create({
     height: 90,
     flex: 1 / 3,
     alignItems: 'center'
+  },
+  cellWrapperWithoutBorder: {
+    borderColor: '#e0e0e0',
+    height: 90,
+    flex: 1 / 3,
+    alignItems: 'center' 
   }
 })
 

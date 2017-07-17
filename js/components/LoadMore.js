@@ -6,7 +6,10 @@ import {
   Platform,
   Text,
   View,
+  Dimensions
 } from 'react-native'
+
+const { width } = Dimensions.get('window')
 
 const LoadMore = (props) => {
   const Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity
@@ -20,6 +23,12 @@ const LoadMore = (props) => {
       </View>
       </View>
     </Touchable>
+    {/* using touchable Opacity for android devices, and without view Container style *//* <TouchableOpacity
+      onPress={() => { props.canFetch && !props.isFetching ? props.onLoadMore(props.limit, props.offset): null}}
+      style={styles.osLoadMore}
+      activeOpacity={0.8} >
+      <Text style={styles.osLoadMoreText}>Load More</Text>
+    </TouchableOpacity> */}
   )
 }
 
@@ -53,3 +62,24 @@ export default LoadMore
     //   accessibilityLabel="Load More Brands"
     //   onPress={() => { props.canFetch && !props.isFetching ? props.onLoadMore(props.limit, props.offset): null}}
     // />
+  osLoadMore: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: width - this.marginLeft - this.marginRight,
+    backgroundColor: '#FFF',
+    marginTop: 10,
+    paddingTop: 18,
+    paddingBottom: 18,
+    marginLeft: 10,
+    marginRight: 10,
+    borderWidth: 1,
+    borderRadius: 3,
+    borderColor: '#E0E0E0'
+  },
+  osLoadMoreText: {
+    color: 'rgba(0, 0, 0, 0.38)',
+  }
+})
+
+export default LoadMore
